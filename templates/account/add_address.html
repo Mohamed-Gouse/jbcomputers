@@ -58,10 +58,8 @@
         var address = document.getElementById("address").value;
         var place = document.getElementById("place").value;
         var zipcode = document.getElementById("zipcode").value;
-        var pattern = !/[a-zA-Z][a-zA-Z0-9_\s]/
-        var sp = !/\d/
 
-        if (!/[a-zA-Z][a-zA-Z0-9_\s]/.test(first_name) || !/[a-zA-Z][a-zA-Z0-9_\s]/.test(last_name) || !/[a-zA-Z][a-zA-Z0-9_\s]/.test(phone) || !/[a-zA-Z][a-zA-Z0-9_\s]/.test(address) || !/[a-zA-Z][a-zA-Z0-9_\s]/.test(place) || !/[a-zA-Z][a-zA-Z0-9_\s]/.test(zipcode)) {
+        if (!/[a-zA-Z][a-zA-Z_\s]/.test(first_name) || !/[a-zA-Z][a-zA-Z_\s]/.test(last_name) || !/[0-9]/.test(phone) || !/[a-zA-Z][a-zA-Z_\s]/.test(address) || !/[a-zA-Z][a-zA-Z_\s]/.test(place) || !/[0-9]/.test(zipcode)) {
             alert('Should contain atleast on character');
             return false;
         }
