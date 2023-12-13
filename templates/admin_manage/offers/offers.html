@@ -1,0 +1,40 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row my-5 d-flex justify-content-center">
+    <div class="col-10 p-3 bg-white shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fw-bold text-center text-secondary">Offers</h1>
+            <a class="btn btn-primary" href="{% url 'offer-create' %}">Add Offer</a>
+        </div>
+        <hr>
+        <table class="table text-center shadow-sm">
+            <tr class="bg-dark text-white">
+                <th>Sl No</th>
+                <th>Product</th>
+                <th>Discount Type</th>
+                <th>Discount Value</th>
+                <th>Start On</th>
+                <th>Ends At</th>
+                <th>Action</th>
+            </tr>
+            {% for offer in offers %}
+
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ offer.product.name }}</td>
+                <td>{{ offer.discount_type }}</td>
+                <td>{{ offer.discount_value }}%</td>
+                <td>{{ offer.start_date }}</td>
+                <td>{{ offer.end_date }}</td>
+                <td>
+                    <a href="{% url 'offer-delete' offer.id %}" class="btn btn-outline-warning">Delete</a>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

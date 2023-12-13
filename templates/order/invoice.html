@@ -1,0 +1,113 @@
+{% extends 'account/base.html' %}
+
+{% block title %}Invoice #{{ order.id }}{% endblock %}
+
+{% block content %}
+
+<div class="container bg-white p-5 shadow-sm">
+    <div class="row">
+        <!-- BEGIN INVOICE -->
+        <div class="col-xs-12">
+            <div class="grid invoice">
+                <div class="grid-body">
+                    <div class="invoice-title">
+                        <div class="row">
+                            <div class="col-6">
+                                <h2 class="fw-bold">Invoice<br>
+                                <span class="small">order #{{ order.id }}</span></h2>
+                            </div>
+                            <div class="col-6 text-right">
+                                <address>
+                                    <strong>Order Date:</strong><br>
+                                    {{ order.created_at }}
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row my-2">
+                        <div class="col-12">
+
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-6">
+                            <address>
+                                <strong>Shipped To:</strong><br>
+                                {{ order.address.full_name }}<br>
+                                {{ order.address.address }}<br>
+                                {{ order.address.place }}, {{ order.address.zipcode }}<br>
+                                Ph: {{ order.address.phone }}
+                            </address>
+                        </div>
+                        <div class="col-6 text-right">
+                            <address>
+                                <strong>Payment Method:</strong><br>
+                                {% if order.pay_method == 'COD' %}
+                                    Cash on Delivery (COD)
+                                {% else %}
+                                    Pay vai Online (PayPal)
+                                {% endif %}<br>
+                                {{ order.address.Email }}<br>
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>ORDER SUMMARY</h3>
+                            <table class="table table-striped">
+                                    <tr>
+                                        <th><strong>#</strong></th>
+                                        <th class="text-center"><strong>PRODUCT</strong></th>
+                                        <th class="text-center"><strong>QUANTITY</strong></th>
+                                        <th class="text-right"><strong>RATE</strong></th>
+                                        <th class="text-right"><strong>TOTAL</strong></th>
+                                    </tr>
+
+                                    {% for item in order.ordered_products.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td class="text-center"><strong>{{ item.product.name }}</strong><br></td>
+                                            <td class="text-center">{{ item.quantity }}</td>
+                                            <td class="text-right">${{ item.product.price|floatformat:2 }}</td>
+                                            <td class="text-right">${{ item.price|floatformat:2 }}</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td class="text-right"><strong>Sub Total</strong></td>
+                                        <td class="text-right"><strong>${{ total_price|floatformat:2 }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td class="text-right"><strong>Discount</strong></td>
+                                        <td class="text-right"><strong>
+                                            {% if order.discount > 0 %}
+                                                <p class="text-success">${{ order.discount|floatformat:2 }}</p>
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td class="text-right fs-4"><strong>Grand Total</strong></td>
+                                        <td class="text-right fs-4"><strong class="text-success">${{ order.paid_amount|floatformat:2 }}</strong></td>
+                                    </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right identity">
+                            <p>Thank you for your purchase<br><strong class="fs-4">Printer World</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END INVOICE -->
+    </div>
+</div>
+
+{% endblock %}

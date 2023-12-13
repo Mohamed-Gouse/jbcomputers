@@ -1,0 +1,56 @@
+{% extends 'admin_manage/adm/base.html' %}
+{% load humanize %}
+
+
+{% block body_content %}
+
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center p-3 bg-white shadow-sm">
+            <div class="col-lg-7 col-12 my-2">
+                <div class="row">
+                    <div class="col-1  d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-12 my-2 d-flex justify-content-center rounded">
+                                <img src="{{ product.image_1.url }}" class="img-fluid shadow-sm" style="max-height: 70px;">
+                            </div>
+                            <div class="col-12 my-2 d-flex justify-content-center rounded">
+                                <img src="{{ product.image_2.url }}" class="img-fluid shadow-sm" style="max-height: 70px;">
+                            </div>
+                            <div class="col-12 my-2 d-flex justify-content-center rounded">
+                                <img src="{{ product.image_3.url }}" class="img-fluid shadow-sm" style="max-height: 70px;">
+                            </div>
+                            <div class="col-12 my-2 d-flex justify-content-center rounded">
+                                <img src="{{ product.image_4.url }}" class="img-fluid shadow-sm" style="max-height: 70px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-11">
+                        <img src="{{ product.image_1.url }}" class="img-fluid shadow-sm" style="height: 500px">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-12 d-flex align-items-center my-2">
+                <div>
+                    <h3 class="fw-bold py-2">{{ product.name }}</h3>
+                    <p class="text-secondary py-2">Category: {{ product.subcategory.name }}</p>
+                    <p class="text-secondary m-0 py-2">Brand: <img src="{{ product.brand.image.url }}" style="height: 70px;" class="mx-3 img-fluid shadow-sm bordered"></p>
+                    <p class="fw-bold py-2">Price: ₹{{ product.price|floatformat:2|intcomma }}</p>
+                    {% if product.stock > 0 %}
+                        <p class="text-success fw-bold py-2">Stock: {{ product.stock }}</p>
+                    {% else %}
+                        <p class="text-danger fw-bold py-2">Stock: {{ product.stock }}</p>
+                    {% endif %}
+
+                    <div>
+                        <a href="{% url 'productEdit' product.id %}" class="btn btn-outline-secondary fw-bold">Edit</a>
+                        <a href="{% url 'productDelete' product.id %}" class="btn btn-outline-danger px-2">Delete</a>
+                    </div>
+                    <p class="small text-secondary py-3">{{ product.description }}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

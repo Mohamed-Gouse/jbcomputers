@@ -1,0 +1,107 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Order: {{ orders.id }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid p-2">
+    <div class="row">
+        <div class="col-10 m-auto bg-white rounded shadow-sm p-3">
+            <h3 class="fw-bold text-center">Order Summary</h3>
+            <hr>
+            <div class="p-3 shadow-sm">
+                <table class="table table-borderless">
+                    <tr>
+                        <th>Oder ID</th>
+                        <td>{{ orders.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Order Date</th>
+                        <td>{{ orders.created_at }}</td>
+                    </tr>
+                    <tr>
+                        <th>Product</th>
+                        <td>
+                            <table class="table table-bordered">
+                                <tr class="bg-dark text-white">
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Image</th>
+                                </tr>
+                                {% for order in orders.ordered_products.all %}
+                                    <tr>
+                                        <td>{{ order.product.name }}</td>
+                                        <td>{{ order.quantity }}</td>
+                                        <td>{{ order.price }}</td>
+                                        <td><img src="{{ order.product.thumbnail }}" style="height: 70px; width: auto;"></td>
+                                    </tr>
+                                {% endfor %}
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Shipping Address</th>
+                        <td>
+                            {{ orders.address.full_name }}, {{ orders.address.address }},
+                            <br>{{ orders.address.place }}, {{ orders.address.zipcode }}
+                            <br><strong>Contacts: </strong>{{ orders.address.phone }}, {{ orders.address.Email }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total Amount</th>
+                        <td>${{ orders.paid_amount|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Method</th>
+                        <td>{{ orders.pay_method }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Status</th>
+                        <td>
+                            {% if orders.paid %}
+                                Paid
+                            {% else %}
+                                Not Paid
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Order Status</th>
+                        <td>{{ orders.status }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center py-3">
+                {% if orders.status == 'Cancel' %}
+                    <p class="fw-bold m-0 px-3">You cancelled your product.! </p>
+                    <button class="btn btn-danger" disabled>Cancel</button>
+                {% elif orders.status == 'Delivered' %}
+                    <p class="fw-bold m-0 px-3">Return your product ? </p>
+                    <a href="{% url 'initiate-return' orders.id %}" class="btn btn-warning">Return</a>
+                {% else %}
+                    <p class="fw-bold m-0 px-3">Cancel your Order ? </p>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelbtn">Cancel</button>
+                {% endif %}
+                <div class="modal fade" id="cancelbtn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure to cancel the product...!</p>
+                                <a href="{% url 'cancelOrder' orders.id %}" class="btn btn-danger">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

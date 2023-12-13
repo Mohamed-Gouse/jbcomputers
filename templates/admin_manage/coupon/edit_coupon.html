@@ -1,0 +1,39 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row my-5 d-flex justify-content-center">
+    <div class="col-6 p-3 bg-white shadow-sm">
+        <h1 class="fw-bold text-center text-secondary">Edit Coupon</h1>
+        <hr>
+
+        <div class="card p-2">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label>Coupon Code</label>
+                  <input type="text" class="form-control" name="code" value="{{ coupon.code }}">
+                </div>
+                <div class="form-group">
+                  <label>Discount</label>
+                  <input type="number" class="form-control" name="discount" value="{{ coupon.discount }}">
+                </div>
+                <div class="form-group">
+                  <label>Start From</label>
+                  <input type="datetime-local" class="form-control" name="valid_from" value="{{ coupon.valid_from }}">
+                </div>
+                <div class="form-group">
+                  <label>Ends On</label>
+                  <input type="datetime-local" class="form-control" name="valid_to" value="{{ coupon.valid_to }}">
+                </div>
+                <div class="form-group text-end">
+                  <input type="submit" class="btn btn-outline-success" value="Edit Coupon">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ request.user.username }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="py-3">
+        <h3 class="fw-bold text-center text-secondary">My Account</h3>
+        <div class="row py-3 px-1 d-flex justify-content-center">
+
+            <div class="col-md-6">
+                <div class="bg-white shadow-sm p-3">
+                    <h4 class="text-center fw-bold text-uppercase">My Profile</h4>
+                    <hr>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" value="{{ request.user.username }}" name="username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="{{ request.user.email }}" name="email" class="form-control">
+                        </div>
+                        <div class="text-right">
+                            <input type="submit" class="btn btn-outline-success" value="Update Profile">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

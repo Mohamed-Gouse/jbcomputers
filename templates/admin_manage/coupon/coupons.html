@@ -1,0 +1,55 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row my-5 d-flex justify-content-center">
+    <div class="col-10 p-3 bg-white shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fw-bold text-center text-secondary">Coupons</h1>
+            <a class="btn btn-primary" href="{% url 'coupons-add' %}">Add Coupon</a>
+        </div>
+        <hr>
+        <table class="table text-center shadow-sm">
+            <tr class="bg-dark text-white">
+                <th>Sl No</th>
+                <th>Coupon Code</th>
+                <th>Discount </th>
+                <th>Start On</th>
+                <th>Ends At</th>
+                <th>Active</th>
+                <th colspan="3">Action</th>
+            </tr>
+            {% for coupon in coupons %}
+
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ coupon.code }}</td>
+                <td>{{ coupon.discount }}</td>
+                <td>{{ coupon.valid_from }}</td>
+                <td>{{ coupon.valid_to }}</td>
+                <td class="fw-bold">
+                    {% if coupon.active %}
+                        Active
+                    {% else %}
+                        Blocked
+                    {% endif %}
+                </td>
+                <td>
+                    {% if coupon.active %}
+                        <a href="{% url 'coupon-block' coupon.id %}" class="btn btn-danger">Block</a>
+                    {% else %}
+                        <a href="{% url 'coupon-block' coupon.id %}" class="btn btn-success">Unblock</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'coupon-delete' coupon.id %}" class="btn btn-warning">Delete</a>
+                </td>
+                <td>
+                    <a href="{% url 'coupon-edit' coupon.id %}" class="btn btn-secondary">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row m-0 d-flex justify-content-center">
+    <div class="col-6 my-3 p-3 bg-white shadow-sm">
+        <h1 class="fw-bold text-center text-secondary">Edit Brands</h1>
+        <hr>
+        <form method="post" action="{% url 'productEdit_perform' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" value="{{ product.id }}" name="id">
+            <div class="form-group p-1">
+                <label for="name">Product Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}">
+            </div>
+            <div class="form-group p-1">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description">{{ product.description }}</textarea>
+            </div>
+            <div class="form-group p-1">
+                <label for="brand">Brand</label>
+                <select class="form-select" id="brand" name="brand">
+                    <option value="{{ product.brand.id }}" selected>{{ product.brand.name }}</option>
+                  {% for brand in brand %}
+                      <option value="{{ brand.id }}">{{ brand.name }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="form-group p-1">
+                <label for="category">Category</label>
+                <select class="form-select" id="category" name="category">
+                    <option value="{{ product.subcategory.id }}" selected>{{ product.subcategory.name }}</option>
+                  {% for cat in subcategory %}
+                      <option value="{{ cat.id }}">{{ cat.name }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="form-group p-1">
+                <label for="stock">Stock</label>
+                <input type="text" class="form-control" id="stock" name="stock" value="{{ product.stock }}">
+            </div>
+            <div class="form-group p-1">
+                <label for="price">Price</label>
+                <input type="text" class="form-control" id="price" name="price" value="{{ product.price }}">
+            </div>
+            <div class="form-group p-1">
+                <label for="img1">Image 1</label>
+                <input type="file" class="form-control" id="img1" name="img1">
+            </div>
+            <div class="form-group p-1">
+                <label for="img2">Image 2</label>
+                <input type="file" class="form-control" id="img2" name="img2">
+            </div>
+            <div class="form-group p-1">
+                <label for="img3">Image 3</label>
+                <input type="file" class="form-control" id="img3" name="img3">
+            </div>
+            <div class="form-group p-1">
+                <label for="img4">Image 4</label>
+                <input type="file" class="form-control" id="img4" name="img4">
+            </div>
+            <div class="d-flex justify-content-end">
+                <input type="submit" value="Edit Product" class="btn btn-outline-dark">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

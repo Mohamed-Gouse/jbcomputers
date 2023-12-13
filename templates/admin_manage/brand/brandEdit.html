@@ -1,0 +1,43 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row my-5 d-flex justify-content-center">
+    <div class="col-6 p-3 bg-white shadow-sm">
+        <h1 class="fw-bold text-center text-secondary">Edit Brands</h1>
+        <hr>
+        <div class="card p-2">
+            <form method="post" action="{% url 'brandEdit_perform' %}" enctype="multipart/form-data" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <input type="hidden" value="{{ brand.id }}" name="id">
+                <div class="form-group">
+                  <label for="name">Brand Name</label>
+                  <input type="text" class="form-control" id="name" name="brand" value="{{ brand.name}}">
+                </div>
+                <div class="form-group">
+                  <label for="logo">Brand Logo</label>
+                    <img src="{{ brand.image.url }}" style="height: 50px;" class="img-fluid">
+                  <input type="file" class="form-control" id="logo" name="logo">
+                </div>
+                <div class="form-group text-end">
+                  <input type="submit" class="btn btn-outline-success" value="Edit Brand">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var name = document.getElementById("name").value;
+
+        if (!/[a-zA-Z][a-zA-Z0-9_\s]/.test(name)) {
+            alert('Should contain atleast on character');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+{% endblock %}

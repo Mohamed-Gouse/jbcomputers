@@ -1,0 +1,27 @@
+<div id="paypal-button-container" style="display: none">
+
+</div>
+<script src="https://www.paypal.com/sdk/js?client-id=ATMiQU7KiBixV43UPhBx4SeKF5pb70imYMt4u0QtuyC0iaEtVCoLQlhQRfd2rOrghobUl3VYRJUdXgmu"></script>
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            // Set up the transaction when the button is clicked
+            return actions.order.create({
+                purchase_units: [{
+                    description: 'Your Item Description',
+                    amount: {
+                        currency_code: 'INR',
+                        value: '{{ cart.get_total_price }}'
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            // Capture the funds from the transaction
+            return actions.order.capture().then(function(details) {
+                // Handle the payment success
+                alert('Transaction completed by ' + details.payer.name.given_name);
+            });
+        }
+    }).render('#paypal-button-container'); // Specify the container where the button will be rendered
+</script>

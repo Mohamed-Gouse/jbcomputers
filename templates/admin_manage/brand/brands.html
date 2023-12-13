@@ -1,0 +1,95 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row my-5 d-flex justify-content-center">
+    <div class="col-10 p-3 bg-white shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fw-bold text-center text-secondary">Brands</h1>
+            <button type="button" class="btn btn-outline-primary px-5 fw-bold" data-toggle="modal" data-target="#AddBrand">Add Brand</button>
+        </div>
+        <hr>
+        <table class="table text-center shadow-sm">
+            <tr class="bg-dark text-white">
+                <th>Sl No</th>
+                <th>Name</th>
+                <th>Logo</th>
+                <th colspan="3">Action</th>
+            </tr>
+            {% for brand in brand %}
+
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ brand.name }}</td>
+                <td>
+                    <img src="{{ brand.image.url }}" class="img-fluid" style="height: 100px;">
+                </td>
+                <td>
+                    <a href="{% url 'brandEdit' brand.id %}" class="btn btn-outline-secondary">Edit Brand</a>
+                </td>
+                <td>
+                    {% if brand.active %}
+                        <a href="{% url 'brandBlock' brand.id %}" class="btn btn-outline-danger">Block</a>
+                    {% else %}
+                        <a href="{% url 'brandBlock' brand.id %}" class="btn btn-outline-success">Unblock</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'brandDelete' brand.id %}" class="btn btn-outline-warning">Delete</a>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </table>
+
+    </div>
+</div>
+
+
+<!-- Modal for Add Brand -->
+<div class="modal fade" id="AddBrand" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <form method="post" action="{% url 'brandAdd_perform' %}" enctype="multipart/form-data" onsubmit="return validateForm()">
+      {% csrf_token %}
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Brand</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                  <label for="name">Brand Name</label>
+                  <input type="text" class="form-control" id="name" name="brand">
+              </div>
+              <div class="form-group">
+                  <label for="logo">Brand Logo</label>
+                  <input type="file" class="form-control" id="logo" name="logo">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add Brand</button>
+          </div>
+        </div>
+      </form>
+  </div>
+</div>
+
+
+<script>
+    function validateForm() {
+        var name = document.getElementById("name").value;
+
+        if (!/[a-zA-Z][a-zA-Z0-9_\s]/.test(name)) {
+            alert('Should contain atleast on character');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+
+{% endblock %}

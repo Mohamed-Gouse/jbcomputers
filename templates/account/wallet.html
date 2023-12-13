@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Wallet{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid p-2">
+    <div class="row">
+        <div class="col-10 m-auto bg-white rounded shadow-sm p-3">
+            <h3 class="fw-bold text-center">Wallet</h3>
+            <hr>
+            <div class="p-3 shadow-sm">
+                <table class="table table-striped">
+                    <tr>
+                        <th>#</th>
+                        <th>Transaction ID</th>
+                        <th class="text-center">Returned Date</th>
+                        <th class="text-right">Credit/Debit</th>
+                        <th class="text-right">Amount</th>
+                    </tr>
+                    {% for wallets in wallet %}
+                        <tr>
+                            <th>{{ forloop.counter }}</th>
+                            <th><p>{{ wallets.transaction_id }}</p></th>
+                            <th class="text-center"><p>{{ wallets.balance_returned }}</p></th>
+                            {% if wallets.balance_type == 'Credit' %}
+                                <th class="text-right text-success"><p>{{ wallets.balance_type }}</p></th>
+                            {% else %}
+                                <th class="text-right text-danger"><p>{{ wallets.balance_type }}</p></th>
+                            {% endif %}
+                            {% if wallets.balance_type == 'Credit' %}
+                                <th class="text-right text-success"><p>${{ wallets.amount|floatformat:2 }}</p></th>
+                            {% else %}
+                                <th class="text-right text-danger"><p>${{ wallets.amount|floatformat:2 }}</p></th>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="3"></td>
+                        <td class="text-right fw-bold fs-3">Total Balance</td>
+                        <td class="text-right fw-bold fs-3 text-success">${{ balance|floatformat:2 }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

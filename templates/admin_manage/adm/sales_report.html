@@ -1,0 +1,44 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="container-fluid p-2">
+    <div class="row">
+        <div class="col-10 m-auto bg-white rounded shadow-sm p-3">
+            <div class="d-flex justify-content-between">
+                <h3 class="fw-bold text-center">Sales Report</h3>
+                <a class="btn btn-success" href="{% url 'sales-chart' %}">Sales Chart</a>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between shadow-sm p-3 rounded alert-info my-3">
+                <p class="fw-bold fs-5 m-0">Total Sales: ${{ total_sales|floatformat:2 }}</p>
+                <p class="fw-bold fs-5 m-0">Total Quantity Sold: {{ total_quantity_sold }}</p>
+            </div>
+            <h3>Sales:</h3>
+            <table class="table table-striped" style="max-height: 250px; overflow: scroll;">
+                <thead class="bg-secondary text-white">
+                    <tr>
+                        <th>#</th>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.user.get_full_name }}</td>
+                            <td>{{ order.created_at }}</td>
+                            <td>${{ order.paid_amount_total|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

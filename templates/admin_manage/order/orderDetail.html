@@ -1,0 +1,111 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="container-fluid p-2">
+    <div class="row">
+        <div class="col-10 m-auto bg-white rounded shadow-sm p-3">
+            <h3 class="fw-bold text-center">Order</h3>
+            <hr>
+            <div class="p-3 shadow-sm d-flex justify-content-center align-items-center">
+
+                <table class="table table-borderless">
+                    <tr>
+                        <th>Customer Username</th>
+                        <td>{{ orders.user.username }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Oder ID</th>
+                        <td>{{ orders.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Order Date</th>
+                        <td>{{ orders.created_at }}</td>
+                    </tr>
+                    <tr>
+                        <th>Product</th>
+                        <td>
+                            <table class="table table-bordered">
+                                <tr class="bg-dark text-white">
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Image</th>
+                                </tr>
+                                {% for order in orders.ordered_products.all %}
+                                    <tr>
+                                        <td>{{ order.product.name }}</td>
+                                        <td>{{ order.quantity }}</td>
+                                        <td>{{ order.price }}</td>
+                                        <td><img src="{{ order.product.thumbnail }}" style="height: 70px; width: auto;"></td>
+                                    </tr>
+                                {% endfor %}
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Shipping Address</th>
+                        <td>
+                            {{ orders.address.full_name }}, {{ orders.address.address }},
+                            <br>{{ orders.address.place }}, {{ orders.address.zipcode }}
+                            <br><strong>Contacts: </strong>{{ orders.address.phone }}, {{ orders.address.Email }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total Amount</th>
+                        <td>${{ orders.paid_amount|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Method</th>
+                        <td>{{ orders.pay_method }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Status</th>
+                        <td>
+                            {% if orders.paid %}
+                                Paid
+                            {% elif orders.status == orders.CANCEL and orders.paid %}
+                                Product cancelled & Cash returned.
+                            {% else %}
+                                Not Paid
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Order Status</th>
+                        <td>{{ orders.status }}</td>
+                    </tr>
+                    {% if orders.status == 'Cancel' %}
+                        <tr>
+                            <th colspan="2" class="text-danger">This order cancelled</th>
+                        </tr>
+                    {% elif orders.status == 'Delivered' %}
+                        <tr>
+                            <th colspan="2" class="text-success">This order Delivered Successfully</th>
+                        </tr>
+                    {% else %}
+                        <form method="post" action="{% url 'update_order_status' %}">
+                            {% csrf_token %}
+                        <tr>
+                            <th>
+                                <input type="hidden" value="{{ orders.id }}" name="id">
+                                <select name="status" class="form-select" required>
+                                    {% for value, display in orders.STATUS_CHOICES %}
+                                        <option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ display }}</option>
+                                    {% endfor %}
+                                </select>
+                            </th>
+                            <td><input type="submit" value="Update" class="btn btn-primary"></td>
+                        </tr>
+                        </form>
+                    {% endif %}
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

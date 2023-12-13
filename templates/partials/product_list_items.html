@@ -1,0 +1,22 @@
+{% load humanize %}
+<div class="col-xl-3 col-lg-4 col-md-6 col-12 py-1">
+    <div class="bg-white rounded p-2 shadow-sm">
+        <a href="{% url 'product_detail' product.slug %}" class="text-decoration-none text-dark">
+        <div class="d-flex justify-content-center m-0" style="height: 180px;">
+            <img src="{{ product.image_1.url }}" class="img-fluid" alt="" style="height: 150px;">
+        </div>
+        <div>
+            <p class="fs-5 fw-bold" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; height: 26px;">{{ product.name }}</p>
+            <p class="text-secondary">₹{{ product.price|floatformat:2|intcomma }}</p>
+            <div class="d-flex justify-content-between">
+                {% if product.stock > 0 %}
+                    <a href="{% url 'add_to_cart' product.id %}" class="btn btn-warning">Add To Cart</a>
+                {% else %}
+                    <button disabled class="btn btn-warning">Add To Cart</button>
+                {% endif %}
+                <button class="wishlist-btn btn btn-primary" data-product-id="{{ product.id }}">Add to Wishlist</button>
+            </div>
+        </div>
+        </a>
+    </div>
+</div>

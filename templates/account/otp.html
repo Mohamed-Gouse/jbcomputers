@@ -1,0 +1,54 @@
+{% extends 'account/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid vh-100 row d-flex align-items-center justify-content-center">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container d-flex justify-content-center">
+            <div class="alert alert-danger alert-dismissible fade show text-center w-50" role="alert">
+                <strong>Error! </strong>{{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            </div>
+
+        {% endfor %}
+    {% endif %}
+        <div class="col-md-6">
+            <div class="text-center p-5">
+                <p class="fs-3 fw-bold">OTP Verification</p>
+                <form method="post" action="{% url 'otp_perform' %}">
+                    {% csrf_token %}
+                    <input type="text" name="otp" class="form-control" required>
+                    <input type="submit" class="btn btn-primary my-2">
+                </form>
+                <p>Your OTP is valid for <span id="time-left">{{ time_left }}</span> seconds.</p>
+                {% if time_left %}
+                    <button class="btn btn-outline-dark" disabled>Resend Otp</button>
+                {% else %}
+                    <a href="{% url 'resend_otp' %}" class="btn btn-outline-dark" disabled>Resend Otp</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+<script>
+
+    function updateTimer() {
+        var timeLeftElement = document.getElementById("time-left");
+        var timeLeft = parseInt(timeLeftElement.innerHTML);
+        if (timeLeft > 0) {
+            timeLeft -= 1;
+            timeLeftElement.innerHTML = timeLeft;
+        }
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+</script>
+
+{% endblock %}

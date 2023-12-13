@@ -1,0 +1,151 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row my-5 d-flex justify-content-center">
+    <div class="col-10 p-3 bg-white shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fw-bold text-center text-secondary">Products</h1>
+            <button type="button" class="btn btn-outline-primary fw-bold" data-toggle="modal" data-target="#AddProduct">Add Product</button>
+        </div>
+        <hr>
+        <table class="table text-center shadow-sm">
+            <tr class="bg-dark text-white">
+                <th>Sl No</th>
+                <th>Name</th>
+                <th>image</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Action</th>
+            </tr>
+            {% for product in product %}
+
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <a href="{% url 'productDetails' product.slug %}">{{ product.name }}</a>
+                </td>
+                <td>
+                    <img src="{{ product.thumbnail }}" class="img-fluid" style="height: 100px;">
+                </td>
+                <td>{{ product.subcategory.name }}</td>
+                <td>{{ product.stock }}</td>
+                <td>
+                    {% if product.active %}
+                        <a href="{% url 'productBlock' product.id %}" class="btn btn-outline-danger">Block</a>
+                    {% else %}
+                        <a href="{% url 'productBlock' product.id %}" class="btn btn-outline-success">Unblock</a>
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal for Add Brand -->
+<div class="modal fade" id="AddProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Product</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form method="post" action="{% url 'productAdd_perform' %}" enctype="multipart/form-data" onsubmit="return validateForm()">
+              {% csrf_token %}
+                  <div class="form-group p-1">
+                      <label for="name">Product Name</label>
+                      <input type="text" class="form-control" id="name" name="name">
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="description">Description</label>
+                      <textarea class="form-control" id="description" name="description"></textarea>
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="brand">Brand</label>
+                      <select class="form-select" id="brand" name="brand">
+                          {% for brand in brand %}
+                              <option value="{{ brand.id }}">{{ brand.name }}</option>
+                          {% endfor %}
+
+                      </select>
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="category">Category</label>
+                      <select class="form-select" id="category" name="category">
+                          {% for cat in subcategory %}
+                              <option value="{{ cat.id }}">{{ cat.name }}</option>
+                          {% endfor %}
+
+                      </select>
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="stock">Stock</label>
+                      <input type="text" class="form-control" id="stock" name="stock">
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="price">Price</label>
+                      <input type="text" class="form-control" id="price" name="price">
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="img1">Image 1</label>
+                      <input type="file" class="form-control" id="img1" name="img1">
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="img2">Image 2</label>
+                      <input type="file" class="form-control" id="img2" name="img2">
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="img3">Image 3</label>
+                      <input type="file" class="form-control" id="img3" name="img3">
+                  </div>
+                  <div class="form-group p-1">
+                      <label for="img4">Image 4</label>
+                      <input type="file" class="form-control" id="img4" name="img4">
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+  </div>
+</div>
+
+<script>
+    function validateForm() {
+        var name = document.getElementById("name").value;
+        var description = document.getElementById("description").value;
+        var stock = document.getElementById("stock").value;
+        var price = document.getElementById("price").value;
+
+        if (!/[a-zA-Z][a-zA-Z0-9_\s]/.test(name) || !/[a-zA-Z][a-zA-Z0-9_\s]/.test(description)) {
+            alert('Should contain atleast on character');
+            return false;
+        }
+
+        if (!isPositiveInteger(stock) || !isPositiveFloat(price)) {
+            alert('Stock and Price should be positive numeric values.');
+            return false;
+        }
+
+        return true;
+    }
+
+    function isPositiveInteger(value) {
+        return /^\d+$/.test(value) && parseInt(value, 10) >= 0;
+    }
+
+    function isPositiveFloat(value) {
+        return /^\d+(\.\d+)?$/.test(value) && parseFloat(value) >= 0;
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row p-1">
+            <div class="col-md-8 p-3 m-auto">
+                <h3 class="fw-bold text-secondary text-center">Payment Gateway</h3>
+                <hr>
+                {{ form.render }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'admin_manage/adm/base.html' %}
+{% load humanize %}
+
+{% block body_content %}
+
+    <div class="container">
+        <canvas id="salesChart" style="max-height: 250px;"></canvas>
+    </div>
+
+    <script>
+        var chartData = {{ chart_data|safe }};
+
+        document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: 'Total Sales',
+                    data: chartData.sales_values,
+                    backgroundColor: 'rgb(0,140,255, 0.2)',
+                    borderColor: 'rgb(0,84,199)',
+                    borderWidth: 1
+                }, {
+                    label: 'Canceled Orders',
+                    data: chartData.canceled_values,
+                    backgroundColor: 'rgba(150,0,0, 0.2)',
+                    borderColor: 'rgb(255,0,0,5)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false,
+                        }
+                    }
+                }
+            }
+        });
+    });
+    </script>
+
+{% endblock %}

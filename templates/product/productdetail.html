@@ -1,0 +1,138 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center align-items-center p-3 py-5">
+            <div class="col-lg-7 col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <div class="col-2  d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-12 my-2 d-flex justify-content-center rounded">
+                                <img src="{{ product.image_1.url }}" class="img-fluid i1" style="max-height: 70px;">
+                            </div>
+                            <div class="col-12 my-2 d-flex justify-content-center rounded">
+                                <img src="{{ product.image_2.url }}" class="img-fluid i2" style="max-height: 70px;">
+                            </div>
+                            <div class="col-12 my-2 d-flex justify-content-center rounded">
+                                <img src="{{ product.image_3.url }}" class="img-fluid i3" style="max-height: 70px;">
+                            </div>
+                            <div class="col-12 my-2 d-flex justify-content-center rounded">
+                                <img src="{{ product.image_4.url }}" class="img-fluid i4" style="max-height: 70px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8" id="container" style="box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3); height: 500px; width:auto; overflow: hidden;">
+                        <img src="{{ product.image_1.url }}" class="main-img img-fluid" style="transform-origin: center center; object-fit: cover; cursor: crosshair;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-12 d-flex align-items-center my-2">
+                <div>
+                    <h3 class="fw-bold">{{ product.name }}</h3>
+                    <p class="text-secondary">Brand: {{ product.brand.name }}</p>
+                    <p class="text-secondary">Category: {{ product.subcategory.name }}</p>
+
+                    {% if active_offers %}
+                        {% for offer in active_offers %}
+                            <p class="fw-bold fs-4">₹{{ product.price|intcomma }} <span class="alert-success px-1" style="height: 10px; font-size: 12px;">{{ offer.discount_value }}%off</span></p>
+                        {% endfor %}
+                    {% else %}
+                        <p class="fw-bold fs-4">₹{{ product.price|intcomma }}</p>
+                    {% endif %}
+
+
+                    {% if product.stock > 0 %}
+                        <p class="text-success fw-bold">Available</p>
+                    {% else %}
+                        <p class="text-danger fw-bold">Out of Stock</p>
+                    {% endif %}
+
+                    <div class="">
+                        {% if product.stock > 0 %}
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-warning">Add To Cart</a>
+                        {% else %}
+                            <button disabled class="btn btn-warning">Add To Cart</button>
+                        {% endif %}
+                            <button class="wishlist-btn btn btn-primary" data-product-id="{{ product.id }}">Add to Wishlist</button>
+                    </div>
+                    <p class="fw-bold pt-2 text-secondary">Description:</p>
+                    <p class="small text-secondary">{{ product.description }}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    const container = document.getElementById("container");
+    const img = document.querySelector(".main-img");
+
+    container.addEventListener("mousemove", onZoom);
+    container.addEventListener("mouseover", onZoom);
+    container.addEventListener("mouseleave", offZoom);
+
+    function onZoom(e) {
+        const x = e.clientX - e.target.offsetLeft;
+        const y = e.clientY - e.target.offsetTop;
+
+        img.style.transformOrigin = `${x}px ${y}px`;
+        img.style.transform = "scale(2.5)";
+    }
+
+    function offZoom(e) {
+        img.style.transformOrigin = `center center`;
+        img.style.transform = "scale(1)";
+    }
+
+    const thumbnail1 = document.querySelector(".i1");
+    const thumbnail2 = document.querySelector(".i2");
+    const thumbnail3 = document.querySelector(".i3");
+    const thumbnail4 = document.querySelector(".i4");
+
+    thumbnail1.addEventListener("click", () => updateMainImage("{{ product.image_1.url }}"));
+    thumbnail2.addEventListener("click", () => updateMainImage("{{ product.image_2.url }}"));
+    thumbnail3.addEventListener("click", () => updateMainImage("{{ product.image_3.url }}"));
+    thumbnail4.addEventListener("click", () => updateMainImage("{{ product.image_4.url }}"));
+
+    function updateMainImage(imageUrl) {
+        const mainImage = document.querySelector(".main-img");
+        mainImage.src = imageUrl;
+    }
+    </script>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function() {
+    $('.wishlist-btn').on('click', function() {
+      var productId = $(this).data('product-id');
+      var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+
+      $.ajax({
+        type: 'POST',
+        url: '/add_wishlist/' + productId + '/',
+        data: {'csrfmiddlewaretoken': csrfToken},
+        success: function(response) {
+          alert(response.message);
+        },
+        error: function(error) {
+          console.log('Error:', error);
+
+          // Check if the response has a message
+          if (error.responseJSON && error.responseJSON.message) {
+            alert('Error: ' + error.responseJSON.message);
+          } else {
+            alert('An unexpected error occurred.');
+          }
+        }
+      });
+    });
+  });
+  </script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row my-5 d-flex justify-content-center">
+    <div class="col-6 p-3 bg-white shadow-sm">
+        <h1 class="fw-bold text-center text-secondary">Edit Category</h1>
+        <hr>
+        <div class="card p-2">
+            <form method="post" action="{% url 'categoryEdit_perform' %}"  onsubmit="return validateForm()">
+                {% csrf_token %}
+                <input type="hidden" value="{{ category.id }}" name="id">
+                <div class="form-group">
+                  <label for="name">Category Name</label>
+                  <input type="text" class="form-control" id="name" value="{{ category.name }}" name="category">
+                </div>
+
+                <div class="form-group text-end">
+                  <input type="submit" class="btn btn-outline-success" value="Update">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var name = document.getElementById("name").value;
+
+        if (!/[a-zA-Z][a-zA-Z0-9_\s]/.test(name)) {
+            alert('Should contain atleast on character');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+{% endblock %}

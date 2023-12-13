@@ -1,0 +1,175 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="container-fluid">
+    <div class="row my-5 d-flex justify-content-center">
+        <div class="col-10 p-3 bg-white shadow-sm my-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="fw-bold text-center text-secondary">Sub-Categories</h1>
+                <button type="button" class="btn btn-outline-primary fw-bold" data-toggle="modal" data-target="#AddSubcat">Add Sub-Category</button>
+            </div>
+            <hr>
+            <table class="table text-center shadow-sm">
+                <tr class="bg-dark text-white">
+                    <th>Sl No</th>
+                    <th>Name</th>
+                    <th>Icon</th>
+                    <th colspan="3">Action</th>
+                </tr>
+                {% for sub in sub %}
+
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ sub.name }}</td>
+                    <td>
+                        <img src="{{ sub.image.url }}" class="img-fluid" style="height: 100px;">
+                    </td>
+                    <td>
+                        <a href="{% url 'subcategoryEdit' sub.id %}" class="btn btn-outline-secondary">Edit Sub-Category</a>
+                    </td>
+                    <td>
+                        {% if sub.active %}
+                            <a href="{% url 'subcategoryBlock' sub.id %}" class="btn btn-outline-danger">Block</a>
+                        {% else %}
+                            <a href="{% url 'subcategoryBlock' sub.id %}" class="btn btn-outline-success">Unblock</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'subcategoryDelete' sub.id %}" class="btn btn-outline-warning">Delete</a>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </table>
+
+        </div>
+
+<!-- Modal for Add Sub-Cat -->
+<div class="modal fade" id="AddSubcat" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Sub-Category</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form method="post" action="{% url 'subcategoryAdd_perform' %}" enctype="multipart/form-data"  onsubmit="return validateFormsub()">
+              {% csrf_token %}
+                  <div class="form-group">
+                      <label for="name">Sub-Category Name</label>
+                      <input type="text" class="form-control" id="name" name="subcategory" required>
+                  </div>
+                  <div class="form-group">
+                      <label>Category Name</label>
+                      <select name="category" class="form-select" required>
+                          {% for cat in category %}
+                              <option value="{{ cat.id }}">{{ cat.name }}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="logo">Sub-Category Image</label>
+                      <input type="file" class="form-control" id="logo" name="img" required>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Sub-Category</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+  </div>
+</div>
+
+
+{#----------------------------------------------------------------------------------------------------------------------------------------#}
+
+        <div class="col-10 p-3 bg-white shadow-sm my-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="fw-bold text-center text-secondary">Categories</h1>
+                <button type="button" class="btn btn-outline-primary fw-bold" data-toggle="modal" data-target="#Addcat">Add Category</button>
+            </div>
+            <hr>
+            <table class="table text-center shadow-sm">
+                <tr class="bg-dark text-white">
+                    <th>Sl No</th>
+                    <th>Name</th>
+                    <th colspan="2">Action</th>
+                </tr>
+                {% for cat in category %}
+
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ cat.name }}</td>
+                    <td>
+                        <a href="{% url 'categoryEdit' cat.id %}" class="btn btn-outline-secondary">Edit Category</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'categoryDelete' cat.id %}" class="btn btn-outline-warning">Delete</a>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="Addcat" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Category</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form method="post" action="{% url 'categoryAdd_perform' %}"  onsubmit="return validateFormcat()">
+              {% csrf_token %}
+              <div class="form-group">
+                  <label for="name">Category Name</label>
+                  <input type="text" class="form-control" id="catname" name="category">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add Category</button>
+              </div>
+              </form>
+          </div>
+        </div>
+  </div>
+</div>
+
+
+<script>
+    function validateFormcat() {
+        var name = document.getElementById("catname").value;
+
+        if (!/[a-zA-Z][a-zA-Z0-9_\s]/.test(name)) {
+            alert('Should contain atleast on character');
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateFormsub() {
+        var name = document.getElementById("name").value;
+
+        if (!/[a-zA-Z][a-zA-Z0-9_\s]/.test(name)) {
+            alert('Should contain atleast on character');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+
+{% endblock %}

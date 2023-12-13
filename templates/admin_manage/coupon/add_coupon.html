@@ -1,0 +1,42 @@
+{% extends 'admin_manage/adm/base.html' %}
+
+{% block body_content %}
+
+<div class="row my-5 d-flex justify-content-center">
+    <div class="col-6 p-3 bg-white shadow-sm">
+        <h1 class="fw-bold text-center text-secondary">Add Coupon</h1>
+        <hr>
+
+        {% if form.errors %}
+            {% for message in form.errors %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <div class="card p-2">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label>Coupon Code</label>
+                  {{ form.code }}
+                </div>
+                <div class="form-group">
+                  <label>Discount</label>
+                  {{ form.discount }}
+                </div>
+                <div class="form-group">
+                  <label>Start From</label>
+                  {{ form.valid_from }}
+                </div>
+                <div class="form-group">
+                  <label>Ends On</label>
+                  {{ form.valid_to }}
+                </div>
+                <div class="form-group text-end">
+                  <input type="submit" class="btn btn-outline-success" value="Add Coupon">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Product{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row p-1">
+
+            <div class="col-md-10 p-2">
+                <div class="row">
+                    {% for product in product %}
+                        {% include 'partials/product_list_items.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-2 p-2 bg-white my-2">
+                <h3 class="text-bold text-center">Filter Products</h3>
+                <hr>
+                <div>
+                    <button class="c-btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#category-collapse" aria-expanded="true">
+                      Categories
+                    </button>
+                    <div class="collapse ps-5" id="category-collapse">
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'product' %}" class="{% if not active_category %}text-primary{% else %}text-secondary{% endif %}">All Category</a></li>
+                            {% for category_item in category %}
+                                <li>
+                                    <a href="{% url 'product' %}?category={{ category_item.slug }}{% if active_brand %}&brand={{ active_brand }}{% endif %}"
+                                       class="{% if category_item.slug == active_category %}text-primary{% else %}text-secondary{% endif %}">
+                                       {{ category_item.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <button class="c-btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#brand-collapse" aria-expanded="true">
+                      Brands
+                    </button>
+                    {% if active_brand %}
+                        <div class="collapse show ps-5" id="brand-collapse">
+                    {% else %}
+                        <div class="collapse ps-5" id="brand-collapse">
+                    {% endif %}
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'product' %}" class="{% if not active_brand %}text-primary{% else %}text-secondary{% endif %}">All Brands</a></li>
+                            {% for brand_item in brand %}
+                                <li>
+                                    <a href="{% url 'product' %}?brand={{ brand_item.slug }}{% if active_category %}&category={{ active_category }}{% endif %}"
+                                       class="{% if brand_item.slug == active_brand %}text-primary{% else %}text-secondary{% endif %}">
+                                       {{ brand_item.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function() {
+    $('.wishlist-btn').on('click', function() {
+      var productId = $(this).data('product-id');
+      var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+
+      $.ajax({
+        type: 'POST',
+        url: '/add_wishlist/' + productId + '/',
+        data: {'csrfmiddlewaretoken': csrfToken},
+        success: function(response) {
+          alert(response.message);
+        },
+        error: function(error) {
+          console.log('Error:', error);
+        }
+      });
+    });
+  });
+  </script>
+{% endblock %}

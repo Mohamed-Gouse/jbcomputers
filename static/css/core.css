@@ -1,0 +1,26 @@
+.c-btn{
+    border: unset;
+    outline: unset;
+    font-weight: 600;
+    background-color: unset;
+}
+.c-btn:hover{
+    color: gray;
+}
+
+#menu-cart-button {
+    position: relative;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+#menu-cart-button .fa-opencart {
+    position: relative;
+}
+
+#menu-cart-button sup {
+    position: absolute;
+    top: -10px;
+    right: 0;
+    border-radius: 50%;
+}

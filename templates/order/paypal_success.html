@@ -1,0 +1,15 @@
+<!-- templates/success_template.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success</title>
+</head>
+<body>
+    <h1>Payment Successful</h1>
+    <p>Your order was successfully placed.</p>
+    <p>View your invoice <a href="{% url 'view_invoice' order_id=order_id %}">here</a>.</p>
+</body>
+</html>

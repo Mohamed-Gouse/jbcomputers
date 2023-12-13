@@ -1,0 +1,86 @@
+{% extends 'account/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid vh-100 row d-flex align-items-center justify-content-center">
+        <div class="col-md-6">
+            <div class="bg-white rounded shadow-lg px-3 py-5">
+                <h3 class="fw-bold text-center">Sign Up</h3>
+                <hr>
+                <form method="post" action="{% url 'sign_up_action' %}" class="px-5 pt-3 m-auto" id="signup-form">
+                    {% csrf_token %}
+                    <div id="error-container"></div>
+                    <div class="form-group">
+                        <input type="text" name="username" id="username" class="form-control" required>
+                        <label for="username">Username</label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" name="email" id="email" class="form-control" required>
+                        <label for="email">Email ID</label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="password1" id="password1" class="form-control" required>
+                        <label for="password1">Password</label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="password2" id="password2" class="form-control" required>
+                        <label for="password2">Confirm Password</label>
+                    </div>
+                    <div class="form-group d-flex justify-content-end">
+                        <input type="submit" value="Sign Up" class="btn btn-outline-dark px-5">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+jQuery.noConflict();
+(function($) {
+    $(document).ready(function() {
+
+    $('#signup-form').on('submit', function(event) {
+        event.preventDefault();
+        $('#error-container').html('');
+        var formData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            dataType: 'json',
+            success: function(data) {
+                if (data.success) {
+                    window.location.href = data.otp_url;
+                } else if (data.errors) {
+                    var errorContainer = $('#error-container');
+                    for (var field in data.errors) {
+                        for (var error in data.errors[field]) {
+                            errorContainer.append(
+                                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                '<strong>Error! </strong><p class="m-0">' + data.errors[field][error] + '</p>' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<span aria-hidden="true">&times;</span>' +
+                                '</button>' +
+                                '</div>'
+                            );
+                        }
+                    }
+                }
+            }
+        });
+    });
+});
+})(jQuery);
+
+
+</script>
+
+
+
+
+{% endblock %}
