@@ -137,6 +137,10 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
+        'APP': {
+            'client_id': '169487681852-2lr7i00aqisqqqf8f1klqu1r6425fq0b.apps.googleusercontent.com',
+            'secret': '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',
+        },
         'SCOPE': [
             'profile',
             'email',
@@ -160,12 +164,12 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'm.gouse7736@gmail.com'
 EMAIL_HOST_PASSWORD = 'keol gtrk cdbm fhhn'
 
-AWS_ACCESS_KEY_ID = 'AKIARM4JD3EORJUBT2PD '
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'printersworld'
-AWS_S3_SIGNATURE_NAME = 's3v4',
-AWS_S3_REGION_NAME = 'eu-north-1'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-AWS_S3_VERITY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_ACCESS_KEY_ID = 'AKIARM4JD3EORJUBT2PD '
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'printersworld'
+# AWS_S3_SIGNATURE_NAME = 's3v4',
+# AWS_S3_REGION_NAME = 'eu-north-1'
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# AWS_S3_VERITY = True
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
