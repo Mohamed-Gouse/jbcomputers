@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <div class="container-fluid vh-100 row d-flex align-items-center justify-content-center">
+    <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
     {% if form.errors %}
         {% for field in form %}
             {% for error in field.errors %}
@@ -24,7 +24,7 @@
             </div>
         {% endfor %}
     {% endif %}
-        <div class="col-md-6">
+        <div class="col-md-6 col-12 p-0">
             <div class="bg-white rounded shadow-lg p-3">
                 <h3 class="fw-bold text-center">Sign In</h3>
                 <hr>
