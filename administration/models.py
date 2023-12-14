@@ -1,5 +1,4 @@
 from django.db import models
-from product.models import Product
 
 
 # Create your models here.
@@ -29,11 +28,3 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
-
-
-class Offer(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    discount_type = models.CharField(max_length=10, choices=[('percentage', 'Percentage'), ('fixed', 'Fixed')])
-    discount_value = models.DecimalField(max_digits=10, decimal_places=2)
-    start_date = models.DateField()
-    end_date = models.DateField()

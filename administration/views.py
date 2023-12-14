@@ -11,7 +11,7 @@ from acuser.models import Wallet
 from product.models import *
 from order.models import OrderItem, Order, ReturnedProduct
 from .form import OfferForm, CouponForm
-from .models import Banners, Offer, Coupon
+from .models import Banners, Coupon
 from django.core.mail import EmailMessage
 
 

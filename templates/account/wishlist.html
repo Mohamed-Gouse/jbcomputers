@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'core/base.html' %}
 
-</body>
-</html>
+{% block title %}
+Wish List
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <!-- Wishlist Items -->
+      <div class="col-lg-9">
+        <h3 class="fw-bold text-secondary mb-4">Your Wish List</h3>
+
+        <!-- Wishlist Item 1 -->
+          {% for item in wish_items %}
+        <div class="card mb-4">
+          <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{item.product.image_1.url}}" class="img-fluid rounded-start" alt="Item 1 Image">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                  <a href="{% url 'productDetails' item.product.id %}" class="text-decoration-none text-dark" >
+                    <h5 class="card-title">{{ item.product.name}}</h5>
+                      <p class="card-text">${{ item.product.price|floatformat:2 }}</p></a>
+                  <div class="d-flex justify-content-between pt-3">
+                    <a class="btn btn-primary fw-bold" href="{% url 'add_to_cart' item.product.id %}">Add to Cart</a>
+                    <form action="{% url 'remove_from_wishlist' item.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Remove" class="btn btn-danger">
+                    </form>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

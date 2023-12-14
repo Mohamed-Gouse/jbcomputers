@@ -2,8 +2,6 @@ from datetime import date
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-
-from administration.models import Offer
 from cart.models import CartItem
 from product.models import *
 

@@ -16,7 +16,7 @@
             {% else %}
                 <button disabled class="btn btn-warning">Add To Cart</button>
             {% endif %}
-            <button class="wishlist-btn btn btn-primary" data-product-id="{{ product.id }}">Add to Wishlist</button>
+                <a class="btn btn-primary" href="{% url 'add_wishlist' product.id %}">Add to Wishlist</a>
         </div>
     </div>
 </div>

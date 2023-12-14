@@ -1,8 +1,11 @@
+from _decimal import Decimal
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 from PIL import Image
 from io import BytesIO
 from django.core.files import File
+
 
 # Create your models here.
 class Category(models.Model):
@@ -106,3 +109,26 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super(Product, self).save(*args, **kwargs)
+
+    def get_discounted_price(self):
+        offers = Offer.objects.filter(product=self, start_date__lte=timezone.now(), end_date__gte=timezone.now())
+
+        if offers.exists():
+            offer = offers.first()
+            if offer.discount_type == 'percentage':
+                discount_amount = (offer.discount_value / Decimal(100)) * self.price
+            else:
+                discount_amount = offer.discount_value
+
+            discounted_price = self.price - discount_amount
+            return max(discounted_price, Decimal(0))
+        else:
+            return self.price
+
+
+class Offer(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    discount_type = models.CharField(max_length=10, choices=[('percentage', 'Percentage'), ('fixed', 'Fixed')])
+    discount_value = models.DecimalField(max_digits=10, decimal_places=2)
+    start_date = models.DateField()
+    end_date = models.DateField()

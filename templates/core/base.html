@@ -32,9 +32,6 @@
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="{% url 'product' %}">PC PERIPHERALS</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="">BRANDS</a>
-              </li>
             </ul>
 
 
@@ -52,6 +49,7 @@
                     </div>
                     {% if request.user.is_authenticated %}
                         <div class="d-flex align-items-center">
+                            <a href="{% url 'wishlist' %}" class="text-decoration-none text-secondary"><i class="fa-solid fa-heart mx-3 fs-5"></i></a>
                             <a href="{% url 'wallet' %}" class="text-decoration-none text-secondary"><i class="fa-solid fa-wallet mx-3 fs-5"></i></a>
                             <a href="{% url 'profile' %}" class="text-decoration-none text-secondary"><i class="fa-regular fa-user mx-3 fs-5"></i></a>
                             <a href="{% url 'logout' %}" class="btn btn-danger px-3 mx-2">Logout</a>

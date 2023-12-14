@@ -247,19 +247,40 @@ def cancelOrder(request, id):
 
 # ----------------------------------------------Wishlist----------------------------------------------------------
 
-def wishlist(request):
-    wishlists = Wishlist.objects.all()
-    return render(request, 'account/wishlist.html', {'wishlists': wishlists})
+@login_required
+def wish_list(request):
+    wish_items = Wishlist.objects.filter(user=request.user)
+    product_list = [wish_item.product for wish_item in wish_items]
+    context = {
+        "wish_items": wish_items,
+        "products": product_list,
+    }
+    return render(request, 'account/wishlist.html', context)
 
 
+@login_required
 def add_wishlist(request, id):
-    product = get_object_or_404(Product, id=id)
-    wishlist_item, created = Wishlist.objects.get_or_create(user=request.user, product=product)
-
-    if not created:
-        wishlist_item.delete()
-        message = f"{product} removed from wishlist."
+    product = Product.objects.get(id=id)
+    wish_item, created = Wishlist.objects.get_or_create(user=request.user, product=product)
+    if created:
+        messages.success(request, f"{product.name} has been added to your wishlist.")
     else:
-        message = f"{product} added to wishlist."
+        messages.info(request, f"{product.name} is already in your wishlist.")
+    default_url = '/'
+    referer = request.META.get('HTTP_REFERER', default_url)
+    try:
+        return redirect(referer)
+    except ValueError:
+        return redirect(default_url)
 
-    return JsonResponse({'message': message})
+
+def remove_from_wishlist(request, id):
+    wish = Wishlist.objects.get(id=id)
+    if wish:
+        wish.delete()
+    default_url = '/'
+    referer = request.META.get('HTTP_REFERER', default_url)
+    try:
+        return redirect(referer)
+    except ValueError:
+        return redirect(default_url)

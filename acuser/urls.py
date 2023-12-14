@@ -20,6 +20,7 @@ urlpatterns = [
     path('cancelOrder/<int:id>', cancelOrder, name='cancelOrder'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
 
-    path('wishlist', wishlist, name='wishlist'),
+    path('wishlist', wish_list, name='wishlist'),
     path('add_wishlist/<int:id>', add_wishlist, name='add_wishlist'),
+    path('remove_from_wishlist/<int:id>', remove_from_wishlist, name='remove_from_wishlist'),
 ]

@@ -35,7 +35,7 @@
 
                     {% if active_offers %}
                         {% for offer in active_offers %}
-                            <p class="fw-bold fs-4">₹{{ product.price|intcomma }} <span class="alert-success px-1" style="height: 10px; font-size: 12px;">{{ offer.discount_value }}%off</span></p>
+                            <p class="fw-bold fs-5"><del class="fs-4">₹{{ product.price|intcomma|floatformat:2 }}</del> ₹{{ product.get_discounted_price|intcomma|floatformat:2 }} <span class="alert-success px-1" style="height: 10px; font-size: 12px;">{{ offer.discount_value }}%off</span></p>
                         {% endfor %}
                     {% else %}
                         <p class="fw-bold fs-4">₹{{ product.price|intcomma }}</p>
@@ -54,7 +54,7 @@
                         {% else %}
                             <button disabled class="btn btn-warning">Add To Cart</button>
                         {% endif %}
-                            <button class="wishlist-btn btn btn-primary" data-product-id="{{ product.id }}">Add to Wishlist</button>
+                            <a class="btn btn-primary" href="{% url 'add_wishlist' product.id %}">Add to Wishlist</a>
                     </div>
                     <p class="fw-bold pt-2 text-secondary">Description:</p>
                     <p class="small text-secondary">{{ product.description }}</p>
@@ -103,36 +103,3 @@
 
 {% endblock %}
 
-{% block script %}
-<script>
-jQuery.noConflict();
-(function($) {
-    $(document).ready(function() {
-        $('.wishlist-btn').on('click', function() {
-            var productId = $(this).data('product-id');
-            var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
-
-            $.ajax({
-                type: 'POST',
-                url: '/add_wishlist/' + productId + '/',
-                data: {'csrfmiddlewaretoken': csrfToken},
-                success: function(response) {
-                    alert(response.message);
-                },
-                error: function(error) {
-                    console.log('Error:', error);
-
-                    // Check if the response has a message
-                    if (error.responseJSON && error.responseJSON.message) {
-                        alert('Error: ' + error.responseJSON.message);
-                    } else {
-                        alert('An unexpected error occurred.');
-                    }
-                }
-            });
-        });
-    });
-})(jQuery);
-
-  </script>
-{% endblock %}
