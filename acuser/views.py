@@ -237,6 +237,10 @@ def cancelOrder(request, id):
             wallet.save()
         order.status = order.CANCEL
         order.save()
+        for item in order.ordered_products.all():
+            pro = item.product
+            pro.stock += item.quantity
+            pro.save()
     else:
         print('order not found')
     return redirect('order_summary', order_id=id)
