@@ -26,7 +26,13 @@ def checkout(request):
     if request.method == 'POST':
         address = request.POST.get('address')
         if not address:
+            messages.error(request, 'Add Address before checkout')
             return redirect('checkout')
+        for item in cart.all():
+            product = item.product
+            if product.stock < item.quantity:
+                messages.error(request, f'Enough stock for {product.name}.')
+                return redirect('cart_page')
         payment_method = request.POST.get('payment_method')
         request.session['email'] = request.user.email
         request.session['address'] = address
