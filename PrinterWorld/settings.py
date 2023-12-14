@@ -8,9 +8,9 @@ SECRET_KEY = 'django-insecure-)jx9tv#wi3(1!7bstwhqnxor7)(4%o=a=bq9@j#41m&135=moo
 
 DEBUG = True
 
-INTERNAL_IP = socket.gethostbyname(socket.gethostname())
+INTERNAL_IPS = ('13.53.198.120',)
 
-ALLOWED_HOSTS = ['127.0.0.1', '13.53.198.120', 'jb-computers.shop', INTERNAL_IP]
+ALLOWED_HOSTS = ['127.0.0.1', '13.53.198.120', 'jb-computers.shop']
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
