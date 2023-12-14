@@ -1,8 +1,9 @@
+{% load humanize %}
 {% if item %}
-<div class="bg-white rounded shadow-sm border d-flex justify-content-between p-3 align-items-center my-1" id="cart-item-{{ item.product.id }}">
-    <img src="{{ item.product.thumbnail }}" alt="Product-image" class="img-fluid" style="height: 100px">
-    <div>
-        <p class="fw-bold m-0">{{ item.product.name }}</p>
+<div class="bg-white rounded shadow-sm border  p-3 align-items-center my-1">
+    <img src="{{ item.product.thumbnail }}" alt="Product-image" class="img-fluid" style="height: 70px">
+    <p class="fw-bold m-0">{{ item.product.name }}</p>
+    <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center p-2">
             <a href="{% url 'update_cart' item.product.id 'decrement' %}" class="btn btn-outline-dark p-1 px-3">-</a>
             <p class="fw-bold m-0 px-2 p-1">{{ item.quantity }}</p>
@@ -12,7 +13,7 @@
                 <button disabled class="btn btn-outline-dark p-1 px-3">+</button>
             {% endif %}
         </div>
+        <p class="fw-bold text-secondary m-0">₹{{ item.total_price|floatformat:2|intcomma }}</p>
     </div>
-    <p class="fw-bold text-secondary m-0">₹{{ item.total_price|floatformat:2 }}</p>
 </div>
 {% endif %}
