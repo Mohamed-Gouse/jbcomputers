@@ -37,6 +37,7 @@ def cart_page(request):
 
     cart = CartItem.objects.filter(user=request.user)
     total_price = sum(item.total_price() for item in cart)
+    original_price = sum(item.total_price() for item in cart)
     coupon_form = CouponForm(request.POST)
     coupon = ''
     request.session['discount'] = 0
@@ -55,7 +56,7 @@ def cart_page(request):
             except Coupon.DoesNotExist:
                 messages.error(request, 'Invalid coupon code.')
     request.session['total_price'] = int(total_price)
-    return render(request, 'cart/cart.html', {'cart': cart, 'total_price': total_price, 'coupon_form': coupon_form, 'coupon': coupon})
+    return render(request, 'cart/cart.html', {'cart': cart, 'total_price': total_price, 'coupon_form': coupon_form, 'coupon': coupon, 'original_price': original_price})
 
 
 def update_cart(request, id, action):
