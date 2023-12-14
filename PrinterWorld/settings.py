@@ -1,4 +1,5 @@
 import os
+import socket
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -7,7 +8,9 @@ SECRET_KEY = 'django-insecure-)jx9tv#wi3(1!7bstwhqnxor7)(4%o=a=bq9@j#41m&135=moo
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '13.53.198.120', 'jb-computers.shop']
+INTERNAL_IP = socket.gethostbyname(socket.gethostname())
+
+ALLOWED_HOSTS = ['127.0.0.1', '13.53.198.120', 'jb-computers.shop', INTERNAL_IP]
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
