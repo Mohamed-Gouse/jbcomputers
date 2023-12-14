@@ -60,7 +60,7 @@ def cart_page(request):
 
 
 def update_cart(request, id, action):
-    cart = get_object_or_404(CartItem, product=id)
+    cart = get_object_or_404(CartItem, user=request.user, product=id)
     if action == 'increment':
         cart.quantity += 1
     elif action == 'decrement':

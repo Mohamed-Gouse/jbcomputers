@@ -105,30 +105,34 @@
 
 {% block script %}
 <script>
-  $(document).ready(function() {
-    $('.wishlist-btn').on('click', function() {
-      var productId = $(this).data('product-id');
-      var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+jQuery.noConflict();
+(function($) {
+    $(document).ready(function() {
+        $('.wishlist-btn').on('click', function() {
+            var productId = $(this).data('product-id');
+            var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
 
-      $.ajax({
-        type: 'POST',
-        url: '/add_wishlist/' + productId + '/',
-        data: {'csrfmiddlewaretoken': csrfToken},
-        success: function(response) {
-          alert(response.message);
-        },
-        error: function(error) {
-          console.log('Error:', error);
+            $.ajax({
+                type: 'POST',
+                url: '/add_wishlist/' + productId + '/',
+                data: {'csrfmiddlewaretoken': csrfToken},
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function(error) {
+                    console.log('Error:', error);
 
-          // Check if the response has a message
-          if (error.responseJSON && error.responseJSON.message) {
-            alert('Error: ' + error.responseJSON.message);
-          } else {
-            alert('An unexpected error occurred.');
-          }
-        }
-      });
+                    // Check if the response has a message
+                    if (error.responseJSON && error.responseJSON.message) {
+                        alert('Error: ' + error.responseJSON.message);
+                    } else {
+                        alert('An unexpected error occurred.');
+                    }
+                }
+            });
+        });
     });
-  });
+})(jQuery);
+
   </script>
 {% endblock %}
