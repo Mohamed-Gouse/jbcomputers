@@ -20,7 +20,7 @@ Wish List
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                  <a href="{% url 'productDetails' item.product.slug %}" class="text-decoration-none text-dark" >
+                  <a href="{% url 'product_detail' item.product.slug %}" class="text-decoration-none text-dark" >
                     <h5 class="card-title">{{ item.product.name}}</h5>
                       <p class="card-text">${{ item.product.price|floatformat:2 }}</p></a>
                   <div class="d-flex justify-content-between pt-3">
