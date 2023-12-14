@@ -8,15 +8,15 @@
         <div>
             <p class="fs-5 fw-bold" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; height: 26px;">{{ product.name }}</p>
             <p class="text-secondary">₹{{ product.price|floatformat:2|intcomma }}</p>
-            <div class="d-flex justify-content-between">
-                {% if product.stock > 0 %}
-                    <a href="{% url 'add_to_cart' product.id %}" class="btn btn-warning">Add To Cart</a>
-                {% else %}
-                    <button disabled class="btn btn-warning">Add To Cart</button>
-                {% endif %}
-                <button class="wishlist-btn btn btn-primary" data-product-id="{{ product.id }}">Add to Wishlist</button>
-            </div>
         </div>
         </a>
+        <div class="d-flex justify-content-between">
+            {% if product.stock > 0 %}
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-warning">Add To Cart</a>
+            {% else %}
+                <button disabled class="btn btn-warning">Add To Cart</button>
+            {% endif %}
+            <button class="wishlist-btn btn btn-primary" data-product-id="{{ product.id }}">Add to Wishlist</button>
+        </div>
     </div>
 </div>

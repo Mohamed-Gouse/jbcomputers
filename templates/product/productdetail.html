@@ -6,35 +6,31 @@
 {% block content %}
 
     <div class="container-fluid">
-        <div class="row d-flex justify-content-center align-items-center p-3 py-5">
-            <div class="col-lg-7 col-12 my-2">
-                <div class="row d-flex align-items-center">
-                    <div class="col-2  d-flex align-items-center">
-                        <div class="row">
-                            <div class="col-12 my-2 d-flex justify-content-center rounded">
-                                <img src="{{ product.image_1.url }}" class="img-fluid i1" style="max-height: 70px;">
+        <div class="row d-flex justify-content-between p-3 py-5">
+            <div class="col-lg-6 col-12 my-2">
+                <div class="row d-flex justify-content-center ">
+                            <div class="col-12 d-flex align-item-center justify-content-center bg-white" style="overflow: hidden;">
+                                <img src="{{ product.image_1.url }}" id="container" class="main-img img-fluid" style="height: 350px; width:auto; transform-origin: center center; object-fit: cover; cursor: crosshair;">
                             </div>
-                            <div class="col-12 my-2 d-flex justify-content-center rounded">
-                                <img src="{{ product.image_2.url }}" class="img-fluid i2" style="max-height: 70px;">
+                            <div class="col-2 my-2 rounded px-1">
+                                <img src="{{ product.image_1.url }}" class="img-fluid i1" style="height: 70px;">
                             </div>
-                            <div class="col-12 my-2 d-flex justify-content-center rounded">
-                                <img src="{{ product.image_3.url }}" class="img-fluid i3" style="max-height: 70px;">
+                            <div class="col-2 my-2 rounded px-1">
+                                <img src="{{ product.image_2.url }}" class="img-fluid i2" style="height: 70px;">
                             </div>
-                            <div class="col-12 my-2 d-flex justify-content-center rounded">
-                                <img src="{{ product.image_4.url }}" class="img-fluid i4" style="max-height: 70px;">
+                            <div class="col-2 my-2 rounded px-1">
+                                <img src="{{ product.image_3.url }}" class="img-fluid i3" style="height: 70px;">
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-8" id="container" style="box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3); height: 500px; width:auto; overflow: hidden;">
-                        <img src="{{ product.image_1.url }}" class="main-img img-fluid" style="transform-origin: center center; object-fit: cover; cursor: crosshair;">
-                    </div>
+                            <div class="col-2 my-2 rounded px-1">
+                                <img src="{{ product.image_4.url }}" class="img-fluid i4" style="height: 70px;">
+                            </div>
                 </div>
             </div>
 
             <div class="col-lg-5 col-12 d-flex align-items-center my-2">
                 <div>
                     <h3 class="fw-bold">{{ product.name }}</h3>
-                    <p class="text-secondary">Brand: {{ product.brand.name }}</p>
+                    <p class="text-secondary">Brand: <img src="{{ product.brand.image.url }}" style="height: 70px; width: 70px;"></p>
                     <p class="text-secondary">Category: {{ product.subcategory.name }}</p>
 
                     {% if active_offers %}
@@ -81,7 +77,7 @@
         const y = e.clientY - e.target.offsetTop;
 
         img.style.transformOrigin = `${x}px ${y}px`;
-        img.style.transform = "scale(2.5)";
+        img.style.transform = "scale(1.5)";
     }
 
     function offZoom(e) {
