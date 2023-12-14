@@ -34,7 +34,6 @@ def add_to_cart(request, id):
 
 @login_required
 def cart_page(request):
-
     cart = CartItem.objects.filter(user=request.user)
     total_price = sum(item.total_price() for item in cart)
     original_price = sum(item.total_price() for item in cart)

@@ -231,12 +231,12 @@ def order_summary(request, order_id):
 
 def cancelOrder(request, id):
     order = Order.objects.get(id=id)
-    wallet = Wallet(user=request.user, amount=order.paid_amount)
     if order:
+        if order.paid:
+            wallet = Wallet(user=request.user, amount=order.paid_amount)
+            wallet.save()
         order.status = order.CANCEL
         order.save()
-        wallet.save()
-        print('Wallet: ', wallet.amount)
     else:
         print('order not found')
     return redirect('order_summary', order_id=id)
