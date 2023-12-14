@@ -10,7 +10,7 @@ DEBUG = True
 
 INTERNAL_IPS = ('13.53.198.120',)
 
-CSRF_TRUSTED_ORIGINS = ['https://jb-computers.shop', '13.53.198.120']
+CSRF_TRUSTED_ORIGINS = ['https://jb-computers.shop', 'http://13.53.198.120']
 
 ALLOWED_HOSTS = ['127.0.0.1', '13.53.198.120', 'jb-computers.shop']
 
