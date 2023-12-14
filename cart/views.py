@@ -20,10 +20,7 @@ def add_to_cart(request, id):
         except ValueError:
             return redirect(default_url)
     else:
-        item = CartItem.objects.create(product=product, quantity=1)
-        if request.user:
-            item.user = request.user
-            item.save()
+        item = CartItem.objects.create(user=request.user, product=product, quantity=1)
         default_url = '/'
         referer = request.META.get('HTTP_REFERER', default_url)
         try:
